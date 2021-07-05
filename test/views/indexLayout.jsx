@@ -3,7 +3,6 @@ function Layout(props) {
   return (
     <html>
       <head>
-        <title>{props.title}</title>
         <link rel="stylesheet" href="/stylesheets/index.css" />
         <script
           dangerouslySetInnerHTML={{

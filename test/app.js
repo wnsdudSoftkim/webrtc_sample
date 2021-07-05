@@ -15,6 +15,7 @@ const io = socketIO(server);
 
 // socketio 문법
 io.on('connection', socket => {
+  console.log('User connected');
 	socket.on('send message', (item) => {
 		const msg = item.name + ' : ' + item.message;
 		console.log(msg);
