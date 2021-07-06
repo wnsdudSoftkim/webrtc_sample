@@ -1,16 +1,18 @@
 import React,{useEffect, useState} from 'react'
 import Layout from './indexLayout'
-import io from 'socket.io'
-import socketIOClient from 'socket.io-client'
+import io from 'socket.io-client'
+const socket = io()
 
-var Message = {name:"",message:""}
+
 function app() {
-  const [messageList,setMessageList] = useState([Message])
+  const [Message,setMessage] = useState("")
+  //name을 위한 useState
   const [nameState, setName] =useState({name:""});
   const {name} = nameState
+  //message를 위한 useState
   const [valueState,setValue] = useState({value:""})
   const value  = valueState
-  const socket = io()
+
 
   const onChangeName = e => {
     e.preventDefault()
@@ -25,9 +27,14 @@ function app() {
       })
     )
   }
-  const onsubmit =(e)=> {
-    e.preventDefault()
-    socket.emit('send message',{name:name,message:value})
+  const send =()=> {
+    
+    socket.emit('send message',{
+      name:name,
+      message:value
+    })
+    console.log(""+name,value)
+    
   }
 
   useEffect(()=> {
@@ -40,23 +47,13 @@ function app() {
     <>
       <Layout>
         <div className="App">
-          {name}
-          <section className="chat-list">
-            {messageList.map((Message,i)=> {
-               <div key={i} className="message">
-                  <p className="username">{Message.name}</p>
-                  <p className="message-text">{Message.message}</p>
-                </div>
-            })
-            
-            }
-               
-          </section>
+          
           <form className="chat-form" 
-           onSubmit={(e)=> onsubmit(e)}
+          
             >
             <div className="chat-inputs">
               <input
+                className="input"
                 type="text"
                 autoComplete="off"
                 onChange={e => onChangeName(e)}
@@ -64,6 +61,7 @@ function app() {
                 placeholder="유저이름"
               />
               <input
+              className="input"
                 type="text"
                 autoComplete="off"
                 onChange={e => 
@@ -73,8 +71,9 @@ function app() {
                 placeholder="메세지입력하기"
               />
             </div>
-            <button type="submit">입력하기</button>
+            <input className="btn" onClick={onSubmit}/>
           </form>
+          <textarea className="chat_log" readOnly></textarea>
         </div>
       </Layout>
      
